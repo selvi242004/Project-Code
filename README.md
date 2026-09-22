@@ -317,7 +317,7 @@ Interrupts |  Keil µVision.
 
 👩‍💻 Author
 
-Selvi Kankanala
+Kankanala  Selvi
 
 Embedded Systems Developer
 
