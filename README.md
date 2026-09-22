@@ -289,7 +289,7 @@ GSM-Thermal-Monitoring-System/
 
 ⭐ Key Features
 
-   Real-time temperature monitoring
+    Real-time temperature monitoring
    
     Humidity monitoring
    
