@@ -1,198 +1,326 @@
-Secure GSM-Based Thermal Monitoring and Set-Point Control System
+🔐 Secure GSM-Based Thermal Monitoring and Set-Point Control System
+
+Embedded C | ARM7 LPC2148 | GSM | DHT11 | I²C EEPROM | LCD | Keypad
+
+
 📌 Project Overview
 
-The Secure GSM-Based Thermal Monitoring and Set-Point Control System is an Embedded C project designed to monitor temperature and humidity and provide remote monitoring and control through GSM communication.
+The Secure GSM-Based Thermal Monitoring and Set-Point Control System is an Embedded C based project developed using the LPC2148 ARM7 microcontroller.
 
-The system reads temperature and humidity values from a DHT11 sensor, displays the information on an LCD, and uses GSM communication to send monitoring information. A keypad is used for user input and set-point configuration.
+The system monitors temperature and humidity using a DHT11 sensor, displays the measured values on a 16×2 LCD, provides GSM-based communication, and allows user interaction through a 4×4 keypad.
 
-The system also uses I2C EEPROM for storing important data such as the password so that the stored information is retained even after power is removed.
+An I²C EEPROM is used for non-volatile data storage, allowing important information such as the password and configured set-points to remain stored even after power is removed.
+
+
 
 🎯 Objectives
-Monitor temperature and humidity continuously.
-Display sensor readings on an LCD.
+
+Monitor temperature and humidity in real time.
+
+Display sensor values on a 16×2 LCD.
+
 Provide GSM-based remote communication.
-Allow users to configure temperature set-points.
-Store password/data in non-volatile EEPROM memory.
-Provide a secure user interface using keypad input.
-Generate appropriate control/alert actions based on configured conditions.
+
+Allow user input through a 4×4 keypad.
+
+Configure temperature and humidity set-points.
+
+Store important data in non-volatile EEPROM.
+
+Provide password-based access.
+
+Develop the firmware using modular Embedded C programming.
+
+
 🛠️ Technologies Used
+
 Embedded C
-ARM Microcontroller
+
+ARM7 / LPC2148
+
 Keil µVision
-GSM Module
-DHT11 Temperature & Humidity Sensor
-I2C EEPROM
-LCD
-RTC
-4x4 Keypad
-UART Communication
-I2C Communication
-Interrupts
+
+GSM Communication
+
+UART
+
+I²C
+
+DHT11
+
+I²C EEPROM
+
+16×2 LCD
+
+4×4 Keypad
+
+External Interrupt
+
+
 🔧 Hardware Components
-ARM-based Microcontroller
+
+LPC2148 ARM7 Microcontroller
+
 GSM Module
-DHT11 Sensor
-16x2 LCD
-I2C EEPROM
-RTC Module
-Matrix Keypad
-Power Supply
-Connecting Hardware
-💻 Software
-Embedded C
-Keil µVision IDE
-ARM Compiler
-🔌 Communication Protocols UART
-UART is used for serial communication between the microcontroller and GSM module.
-I2C
 
-I2C is used for communication with the EEPROM and other I2C-based devices.
+DHT11 Temperature & Humidity Sensor
 
-📊 Main Modules
+16×2 LCD
 
-The project contains separate modules for different hardware and software functions:
+I²C EEPROM
 
-main.c – Main program
-dht11.c / dht11.h – DHT11 sensor interface
-gsm.c / gsm.h – GSM communication
-uart.c / uart.h – UART communication
-i2c.c / i2c.h – I2C communication
-i2c_eeprom.c / i2c_eeprom.h – EEPROM interface
-lcd.c / lcd.h – LCD interface
-keypad.c / keypad.h – Keypad interface
-rtc.c / rtc.h – RTC interface
-delay.c / delay.h – Delay functions
-eint0.c – External interrupt handling
-🔐 Password Storage
+4×4 Matrix Keypad
 
-The system uses non-volatile EEPROM memory to store the password.
+Push Button / Switch
 
-Because EEPROM is non-volatile memory, the stored password remains available even when the power supply is switched off.
+5V Power Supply
 
-The password can therefore be retained between system power cycles.
+Connecting Wires and Supporting Components
 
-🌡️ Temperature Monitoring
 
-The DHT11 sensor provides:
+🔌 Circuit Pin Connections
+
+The following connections are used in the project:
+
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/2834b91b-a132-4dcf-82e8-39d3534e31ae" />
+
+
+
+🔌 Circuit Diagram
+
+
+
+<img width="1536" height="1024" alt="Project flow" src="https://github.com/user-attachments/assets/30216205-d153-4472-9456-012c83a0fe84" />
+
+
+
+
+🏗️ System Architecture
+
+
+                    ┌─────────────────────┐
+                    │     LPC2148 ARM7    │
+                    │   Microcontroller   │
+                    └─────────┬───────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        │                     │                     │
+        ▼                     ▼                     ▼
+  
+      DHT11               16×2 LCD             4×4 Keypad
+      Sensor               Display               Input   
+
+        │
+        │
+        ▼
+    Temperature
+        & 
+      Humidity
+     
+        │
+        └──────────────────┐
+                           ▼
+                 
+                    ┌─────────────┐
+                    │ GSM Module  │
+                    │Communication│
+                    └─────────────┘
+
+                    ┌─────────────┐
+                    │ I²C EEPROM  │
+                    │ Data Storage│
+                    └─────────────┘
+
+                    ┌─────────────┐
+                    │   Switch    │
+                    │   P1.15     │
+                    └─────────────┘
+
+
+
+🔄 Project Working Flow Diagram
+
+<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/97390daa-b395-40bc-8062-ca2c37b307a6" />
+
+
+
+🔐 EEPROM Data Storage
+
+The project uses I²C EEPROM as non-volatile memory.
+
+Important information such as the password and configured set-point values can be stored in EEPROM so that the data is retained even when the system is powered OFF.
+
+
+🌡️ Temperature & Humidity Monitoring
+
+The DHT11 sensor is used to measure:
 
 Temperature
+
 Humidity
 
-The microcontroller reads the sensor data and processes the values before displaying them on the LCD and using them for the configured control logic.
+The LPC2148 reads the sensor data through the DHT11 data line connected to P0.4.
+The measured values can then be displayed on the LCD and compared with the configured set-points.
+
 
 📱 GSM Communication
 
 The GSM module provides remote communication capability.
 
-UART communication is used to exchange commands and data between the microcontroller and GSM module.
+The UART interface is used between the LPC2148 and GSM module:
 
-🖥️ Project Flow
-              ┌─────────────────┐
-              │   Power ON      │
-              └────────┬────────┘
-                       ↓
-              ┌─────────────────┐
-              │ System Init.    │
-              └────────┬────────┘
-                       ↓
-        ┌─────────────────────────────┐
-        │ Read Temperature & Humidity │
-        │          DHT11              │
-        └─────────────┬───────────────┘
-                      ↓
-              ┌─────────────────┐
-              │ Process Data    │
-              └────────┬────────┘
-                       ↓
-              ┌─────────────────┐
-              │ Display on LCD  │
-              └────────┬────────┘
-                       ↓
-              ┌─────────────────┐
-              │ Check Set-Point │
-              └────────┬────────┘
-                       ↓
-              ┌─────────────────┐
-              │ GSM Communication│
-              └────────┬────────┘
-                       ↓
-              ┌─────────────────┐
-              │ Continue Monitor│
-              └─────────────────┘
+LPC2148 P0.1  → GSM TX connection
+
+LPC2148 P0.0  → GSM RX connection
+
+The GSM module can be used for sending monitoring or alert information.
+
+
+⌨️ Keypad Interface
+
+A 4×4 matrix keypad is connected to:
+
+P1.16 – P1.23
+
+The keypad is used for:
+
+Password entry
+
+Menu selection
+
+Set-point configuration
+
+User input
+
+
+🔘 Switch / Interrupt
+
+A push button or switch is connected to:
+
+P1.15
+
+It can be used for menu or interrupt-based user interaction.
+
+
+💻 Software
+
+Development Environment
+
+Keil µVision
+
+ARM Compiler
+
+Embedded C
+
+Programming Concepts
+
+Embedded C
+
+GPIO
+
+UART
+
+I²C
+
+Interrupts
+
+Sensor interfacing
+
+LCD interfacing
+
+Keypad interfacing
+
+EEPROM data storage
+
+GSM communication
+
+Modular firmware development
 
 
 📁 Project Structure
+
 GSM-Thermal-Monitoring-System/
 │
+
 ├── README.md
-│
-├── src/
-│   ├── main.c
-│   ├── gsm.c
-│   ├── gsm.h
-│   ├── uart.c
-│   ├── uart.h
-│   ├── dht11.c
-│   ├── dht11.h
-│   ├── i2c.c
-│   ├── i2c.h
-│   ├── i2c_eeprom.c
-│   ├── i2c_eeprom.h
-│   ├── lcd.c
-│   ├── lcd.h
-│   ├── keypad.c
-│   ├── keypad.h
-│   ├── rtc.c
-│   ├── rtc.h
-│   ├── delay.c
-│   └── delay.h
-│
-├── include/
-│   ├── defines.h
-│   ├── types.h
-│   ├── lcd_defines.h
-│   ├── keypad_defines.h
-│   ├── rtc_defines.h
-│   └── i2c_eeprom_defines.h
-│
-└── docs/
-    └── project-details.md
 
-🚀 Key Features
-Real-time temperature monitoring
-Humidity monitoring
-GSM-based communication
-UART communication
-I2C EEPROM data storage
-Password protection
-LCD-based user interface
-Keypad-based input
-RTC support
-Set-point configuration
-Embedded C modular programming
-📚 Concepts Demonstrated
+├── main.c
 
-This project demonstrates practical knowledge of:
+├── dht11.c
 
-Embedded C programming
-Microcontroller programming
-GPIO interfacing
-UART
-I2C
-EEPROM
-Interrupts
-Sensor interfacing
-GSM communication
-LCD interfacing
-Keypad interfacing
-RTC
-Modular firmware development
+
+├── dht11.h
+
+├── gsm.c
+
+├── gsm.h
+
+├── uart.c
+
+├── uart.h
+
+├── lcd.c
+
+├── lcd.h
+
+├── keypad.c
+
+├── keypad.h
+
+├── i2c.c
+
+├── i2c.h
+
+├── eeprom.c
+
+├── eeprom.h
+
+├── delay.c
+
+├── delay.h
+
+│
+
+├── circuit_diagram.png
+
+├── project_flow.png
+
+└── hardware_setup.jpg
+
+⭐ Key Features
+
+   Real-time temperature monitoring
+   
+    Humidity monitoring
+   
+    GSM-based communication
+   
+    Password protection
+   
+    Non-volatile EEPROM storage
+   
+    LCD display
+   
+    4×4 keypad interface
+   
+    Switch/interrupt interface
+   
+    Modular Embedded C firmware
+   
+    ARM7 LPC2148 microcontroller
+
+   
+📚 Skills Demonstrated:
+
+Embedded C |  ARM7 |  LPC2148 | UART |  I²C |  GSM |  DHT11 |  EEPROM |  LCD |  Keypad |
+Interrupts |  Keil µVision.
+
 👩‍💻 Author
 
 Selvi Kankanala
 
 Embedded Systems Developer
 
-Skills Demonstrated
+📌 Project Documentation
 
-Embedded C ARM UART I2C GSM DHT11 EEPROM RTC LCD Keypad Linux
+The repository includes the source code, circuit diagram, project flow diagram, hardware information, and software implementation details for this Embedded Systems project.
