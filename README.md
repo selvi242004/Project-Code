@@ -1,326 +1,147 @@
-🔐 Secure GSM-Based Thermal Monitoring and Set-Point Control System
+# PROJECT OVERVIEW
+The Secure GSM-Based Thermal Monitoring and Set-Point Control System is an embedded project based on the
+LPC2148 ARM7 microcontroller. It reads temperature and humidity from a DHT11 sensor, displays information on an
+LCD, and compares temperature readings against a configurable threshold. When the threshold is exceeded, the
+firmware can send an SMS notification through the M660A GSM module, provided the module is registered and
+communication is working. The system also uses an AT24C256 EEPROM for persistent settings, a keypad for local input, an RTC for date/time where supported, and UART/I2C/GPIO interfaces for peripheral communication. Password-protected SMS commands
+may be used to restrict remote configuration to authorized users.
 
-Embedded C | ARM7 LPC2148 | GSM | DHT11 | I²C EEPROM | LCD | Keypad
+<img width="506" height="146" alt="Screenshot 2026-10-15 124752" src="https://github.com/user-attachments/assets/103ced3a-f554-4b7d-a049-cfd437c10f57" />
 
 
-📌 Project Overview
+# OBJECTIVES 
+▸ Monitor temperature and relative humidity in real time.
 
-The Secure GSM-Based Thermal Monitoring and Set-Point Control System is an Embedded C based project developed using the LPC2148 ARM7 microcontroller.
+▸ Compare sensor readings with predefined set-points.
 
-The system monitors temperature and humidity using a DHT11 sensor, displays the measured values on a 16×2 LCD, provides GSM-based communication, and allows user interaction through a 4×4 keypad.
+▸ Display sensor readings and system status on an LCD.
 
-An I²C EEPROM is used for non-volatile data storage, allowing important information such as the password and configured set-points to remain stored even after power is removed.
+▸ Generate fault indications using an LED or buzzer.
 
+▸ Send SMS alerts to an authorized mobile number.
 
+▸ Store set-points, passwords, and mobile numbers in EEPROM.
 
-🎯 Objectives
+▸ Support secure remote configuration using SMS commands.
 
-Monitor temperature and humidity in real time.
+▸ Allow local set-point and password changes through a keypad.
 
-Display sensor values on a 16×2 LCD.
+▸ Use UART interrupts for GSM communication.
 
-Provide GSM-based remote communication.
+▸ Include timestamps in fault notifications using the RTC.
 
-Allow user input through a 4×4 keypad.
+# BLOCK DIAGRAM
+The diagram below summarizes the main functional blocks. It is conceptual: the exact pin assignments and peripheral
+choices should be confirmed from the circuit schematic and source code.
 
-Configure temperature and humidity set-points.
+<img width="563" height="328" alt="Screenshot 2026-10-15 104908" src="https://github.com/user-attachments/assets/c4b97b36-118e-48b4-8126-d3fd387c0d61" />
+<img width="613" height="257" alt="Screenshot 2026-10-15 114018" src="https://github.com/user-attachments/assets/e92d6f0c-0616-47d8-be9d-963cf9d3e6c4" />
 
-Store important data in non-volatile EEPROM.
 
-Provide password-based access.
+# HARDWRAE REQUIREMENTS
 
-Develop the firmware using modular Embedded C programming.
+<img width="603" height="299" alt="Screenshot 2026-10-15 114507" src="https://github.com/user-attachments/assets/b9d39d9b-7ec4-4c70-9d5a-8a8f2206cc99" /> 
 
+# SOFTWARE REQUIREMENTS
 
-🛠️ Technologies Used
+<img width="605" height="220" alt="Screenshot 2026-10-15 114628" src="https://github.com/user-attachments/assets/57f48d90-5623-439d-b174-455491e82bd1" />
 
-Embedded C
 
-ARM7 / LPC2148
+Power and logic caution: Check each module's datasheet for supply voltage and logic-level requirements. The LPC2148 uses 3.3 V I/O.GSM modules can require a supply capable of handling high current peaks.
 
-Keil µVision
+# PIN CONNECTIONS 
 
-GSM Communication
+<img width="530" height="317" alt="Screenshot 2026-10-15 115803" src="https://github.com/user-attachments/assets/78ebdc26-b3ee-4cf0-bba9-05dfbfe18246" />
 
-UART
 
-I²C
+Pin verification checklist:
 
-DHT11
+▸ Confirm UART0 peripheral and pin multiplexing in PINSEL0 registers.
 
-I²C EEPROM
+▸ Confirm I2C SDA/SCL pins and EEPROM address from the code and datasheet.
 
-16×2 LCD
+▸ Confirm LCD wiring mode and all GPIO assignments.
 
-4×4 Keypad
+▸ Confirm keypad row/column order and active levels.
 
-External Interrupt
+▸ Confirm external interrupt pin and ISR configuration.
 
+▸ Verify common ground and voltage compatibility across modules.
 
-🔧 Hardware Components
+# WORKING PRINCIPLE
+ <img width="536" height="339" alt="Screenshot 2026-10-15 120105" src="https://github.com/user-attachments/assets/7b718599-9698-4083-a18d-a78d05c78e7c" />
 
-LPC2148 ARM7 Microcontroller
+ # OUTPUT
+ # 1.LCD Reading
+ <img width="205" height="69" alt="Screenshot 2026-10-15 120315" src="https://github.com/user-attachments/assets/06277584-e4cf-44cc-9183-334cf5f6d4cf" />
 
-GSM Module
+ # 2.Keypad Menu
 
-DHT11 Temperature & Humidity Sensor
 
-16×2 LCD
+ # 3.SMS Alert
 
-I²C EEPROM
+ <img width="406" height="120" alt="L" src="https://github.com/user-attachments/assets/620ef0e5-9247-4949-a241-602d0a4739ca" />
 
-4×4 Matrix Keypad
+# 4.Authorized command status
 
-Push Button / Switch
+<img width="350" height="19" alt="Screenshot 2026-10-15 124052" src="https://github.com/user-attachments/assets/83a14256-c37e-4735-9075-5e935752460a" />
 
-5V Power Supply
+EXAMPLES:
 
-Connecting Wires and Supporting Components
+COMMAND 1:
 
+<img width="148" height="111" alt="Q" src="https://github.com/user-attachments/assets/832dc609-519f-4409-a6a8-b48ad9f411f3" />
 
-🔌 Circuit Pin Connections
+OUTPUT:
 
-The following connections are used in the project:
+<img width="313" height="105" alt="K" src="https://github.com/user-attachments/assets/7a851c97-37de-451c-bbf7-8dd473f4d017" />
 
-<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/2834b91b-a132-4dcf-82e8-39d3534e31ae" />
+COMMAND 2:
 
+<img width="182" height="85" alt="-" src="https://github.com/user-attachments/assets/41082f43-2248-4d97-a703-121429e53445" />
 
+OUTPUT:
 
-🔌 Circuit Diagram
+<img width="406" height="120" alt="L" src="https://github.com/user-attachments/assets/f1458ce6-9709-4898-aa63-6e042f0954a6" />
 
+COMMAND 3:
 
+<img width="305" height="81" alt="P" src="https://github.com/user-attachments/assets/e4f2daec-cfbb-44fa-8363-76e8deddfe81" />
 
-<img width="1536" height="1024" alt="Project flow" src="https://github.com/user-attachments/assets/30216205-d153-4472-9456-012c83a0fe84" />
+OUTPUT:
 
+<img width="406" height="120" alt="L" src="https://github.com/user-attachments/assets/feb042a1-e8e5-4a74-81a9-016a7c626d74" />
 
+# TEST CASES AND RESULTS
 
+ <img width="578" height="382" alt="Screenshot 2026-10-15 121059" src="https://github.com/user-attachments/assets/fbe4a416-b024-4897-a96a-056e73512344" />
 
-🏗️ System Architecture
+ # Evaluation Criteria
 
+ ▸ Sensor readings update correctly and invalid readings are handled.
 
-                    ┌─────────────────────┐
-                    │     LPC2148 ARM7    │
-                    │   Microcontroller   │
-                    └─────────┬───────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-        ▼                     ▼                     ▼
-  
-      DHT11               16×2 LCD             4×4 Keypad
-      Sensor               Display               Input   
+ ▸ Threshold comparison matches the implemented firmware logic.
 
-        │
-        │
-        ▼
-    Temperature
-        & 
-      Humidity
-     
-        │
-        └──────────────────┐
-                           ▼
-                 
-                    ┌─────────────┐
-                    │ GSM Module  │
-                    │Communication│
-                    └─────────────┘
+ ▸ Saved EEPROM values persist after a power cycle.
 
-                    ┌─────────────┐
-                    │ I²C EEPROM  │
-                    │ Data Storage│
-                    └─────────────┘
+ ▸ Invalid credentials do not change protected settings.
 
-                    ┌─────────────┐
-                    │   Switch    │
-                    │   P1.15     │
-                    └─────────────┘
+ ▸ SMS delivery is verified independently from the UART command response.
 
+ ▸ Communication faults do not leave the system in an unsafe state.
 
+ # APPLICATIONS
 
-🔄 Project Working Flow Diagram
+ <img width="577" height="206" alt="Screenshot 2026-10-15 121645" src="https://github.com/user-attachments/assets/84be18d4-e4b5-4bb5-981d-fc0cd04c4916" />
 
-<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/97390daa-b395-40bc-8062-ca2c37b307a6" />
+ # FUTURE ENHANCEMENTS
 
+<img width="578" height="335" alt="Screenshot 2026-10-15 122109" src="https://github.com/user-attachments/assets/41b32d31-b299-4bf1-b171-5f59731df915" />
 
+# CONCLUSION
 
-🔐 EEPROM Data Storage
-
-The project uses I²C EEPROM as non-volatile memory.
-
-Important information such as the password and configured set-point values can be stored in EEPROM so that the data is retained even when the system is powered OFF.
-
-
-🌡️ Temperature & Humidity Monitoring
-
-The DHT11 sensor is used to measure:
-
-Temperature
-
-Humidity
-
-The LPC2148 reads the sensor data through the DHT11 data line connected to P0.4.
-The measured values can then be displayed on the LCD and compared with the configured set-points.
-
-
-📱 GSM Communication
-
-The GSM module provides remote communication capability.
-
-The UART interface is used between the LPC2148 and GSM module:
-
-LPC2148 P0.1  → GSM TX connection
-
-LPC2148 P0.0  → GSM RX connection
-
-The GSM module can be used for sending monitoring or alert information.
-
-
-⌨️ Keypad Interface
-
-A 4×4 matrix keypad is connected to:
-
-P1.16 – P1.23
-
-The keypad is used for:
-
-Password entry
-
-Menu selection
-
-Set-point configuration
-
-User input
-
-
-🔘 Switch / Interrupt
-
-A push button or switch is connected to:
-
-P1.15
-
-It can be used for menu or interrupt-based user interaction.
-
-
-💻 Software
-
-Development Environment
-
-Keil µVision
-
-ARM Compiler
-
-Embedded C
-
-Programming Concepts
-
-Embedded C
-
-GPIO
-
-UART
-
-I²C
-
-Interrupts
-
-Sensor interfacing
-
-LCD interfacing
-
-Keypad interfacing
-
-EEPROM data storage
-
-GSM communication
-
-Modular firmware development
-
-
-📁 Project Structure
-
-GSM-Thermal-Monitoring-System/
-│
-
-├── README.md
-
-├── main.c
-
-├── dht11.c
-
-
-├── dht11.h
-
-├── gsm.c
-
-├── gsm.h
-
-├── uart.c
-
-├── uart.h
-
-├── lcd.c
-
-├── lcd.h
-
-├── keypad.c
-
-├── keypad.h
-
-├── i2c.c
-
-├── i2c.h
-
-├── eeprom.c
-
-├── eeprom.h
-
-├── delay.c
-
-├── delay.h
-
-│
-
-├── circuit_diagram.png
-
-├── project_flow.png
-
-└── hardware_setup.jpg
-
-⭐ Key Features
-
-    Real-time temperature monitoring
-   
-    Humidity monitoring
-   
-    GSM-based communication
-   
-    Password protection
-   
-    Non-volatile EEPROM storage
-   
-    LCD display
-   
-    4×4 keypad interface
-   
-    Switch/interrupt interface
-   
-    Modular Embedded C firmware
-   
-    ARM7 LPC2148 microcontroller
-
-   
-📚 Skills Demonstrated:
-
-Embedded C |  ARM7 |  LPC2148 | UART |  I²C |  GSM |  DHT11 |  EEPROM |  LCD |  Keypad |
-Interrupts |  Keil µVision.
-
-👩‍💻 Author
-
-Kankanala  Selvi
-
-Embedded Systems Developer
-
-📌 Project Documentation
-
-The repository includes the source code, circuit diagram, project flow diagram, hardware information, and software implementation details for this Embedded Systems project.
+The Secure GSM-Based Thermal Monitoring and Set-Point Control System demonstrates how an LPC2148 ARM7
+microcontroller can combine sensor acquisition, local display, persistent configuration, and GSM-based remote alerts.
+It offers hands-on experience with Embedded C, UART, I2C, GPIO, interrupt handling, and peripheral integration. Final
+claims about exact pin mappings, output screenshots, and test results should be updated to match the actual hardware
+and firmware.
